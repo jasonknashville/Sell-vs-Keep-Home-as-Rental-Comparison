@@ -425,7 +425,7 @@
             <div><div class="metric-val" id="k-effective">—</div><div class="metric-sub">new home net of rental income</div></div>
           </div>
           <div class="metric-row">
-            <span class="metric-label">vs. Budget Goal</span>
+            <span class="metric-label">Effective Cost vs. Budget Goal <span style="font-size:10px;font-weight:400;">(after rental offset)</span></span>
             <div><div class="metric-val" id="k-vs-budget">—</div></div>
           </div>
 
@@ -577,7 +577,7 @@ function runCalc(){
   const kAllin    = kPI + taxMo + insMo + kPMIMo + hoa;
   const kTotal    = kAllin + curMtg;
   const kEffective= kAllin - Math.max(cashFlow, 0);
-  const kDiff     = kAllin - budget;
+  const kDiff     = kEffective - budget; // compare effective cost (after rent) vs budget
 
   // ── POPULATE SELL ──
   set('s-equity', fc(equity));
@@ -671,7 +671,7 @@ function runCalc(){
     ['PMI required?',               sNeedsPMI?'⚠️ Yes':'✅ No',                 kNeedsPMI?'⚠️ Yes':'✅ No',                    edgeTag(!sNeedsPMI&&kNeedsPMI?true:sNeedsPMI&&!kNeedsPMI?false:null)],
     ['New home P&I',                fc(sPI,2)+'/mo',                             fc(kPI,2)+'/mo',                               edgeTag(sPI<=kPI)],
     ['All-in new home payment',     fc(sAllin,2)+'/mo',                          fc(kAllin,2)+'/mo',                            edgeTag(sAllin<=kAllin)],
-    ['vs. Budget goal',             sDiff<=0?'✅ '+fc(Math.abs(sDiff),0)+' under':'❌ '+fc(sDiff,0)+' over', kDiff<=0?'✅ '+fc(Math.abs(kDiff),0)+' under':'❌ '+fc(kDiff,0)+' over', edgeTag(sDiff<=0&&kDiff>0?true:kDiff<=0&&sDiff>0?false:null)],
+    ['vs. Budget goal (effective)', sDiff<=0?'✅ '+fc(Math.abs(sDiff),0)+' under':'❌ '+fc(sDiff,0)+' over', kDiff<=0?'✅ '+fc(Math.abs(kDiff),0)+' under (after rent)':'❌ '+fc(kDiff,0)+' over (after rent)', edgeTag(sDiff<=0&&kDiff>0?true:kDiff<=0&&sDiff>0?false:null)],
     ['Total monthly obligation',    fc(sAllin,2)+'/mo',                          fc(kTotal,2)+'/mo',                            edgeTag(sAllin<=kTotal)],
     ['Rental cash flow',            '—',                                         fc(cashFlow,2)+'/mo',                          edgeTag(cashFlow>0?false:true,'Sell','Keep ✅')],
     ['Effective cost after rent',   fc(sAllin,2)+'/mo',                          fc(kEffective,2)+'/mo',                        edgeTag(sAllin<=kEffective)],
